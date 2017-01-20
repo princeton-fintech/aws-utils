@@ -20,12 +20,15 @@ def load_config(path):
 def isdir_remote(path):
     result = run('python -c "import os;print os.path.isdir(os.path.expanduser(\'{}\'))"'.format(path))
     return bool(result)
-        
-def download_anaconda():
-    # Check if current conda installation exists on system
+
+def conda_installed():
     current_conda_path = run('which conda')
-    if 'which' not in current_conda_path:
-        print "Anaconda is already installed at {}".format(current_conda_path)
+    return 'which' not in current_conda_path
+        
+
+def download_anaconda():
+    if conda_installed():
+        print "Anaconda is already installed."
         return
     if not isdir_remote("~/.deploy"):
         run('mkdir ~/.deploy')
@@ -40,14 +43,20 @@ def download_anaconda():
             raise Exception("{} is inconsistent...aborting installation!".format(CONDA_INSTALLER))
 
 def install_anaconda():
-    current_conda_path = run('which conda')
-    if 'which' not in current_conda_path:
-        print "Anaconda is already installed at {}".format(current_conda_path)
+    if conda_installed():
+        print "Anaconda is already installed."
         return
     with cd ('~/.deploy'):
         run('bash {} -b'.format(CONDA_INSTALLER))
         run('source ~/.bash_profile')
 
+def install_jupyterlab():
+    if not conda_installed():
+        print "conda is not installed - install Anaconda or check your .bashrc"
+        return
+    run('conda install -c conda-forge jupyterlab')
+
 def deploy_anaconda():
     download_anaconda()
     install_anaconda()
+    install_jupyterlab()
