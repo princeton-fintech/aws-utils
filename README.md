@@ -12,7 +12,7 @@ as jupyterlab on an EC2 host.
 
 # Upcoming work
 
-* Multi-user, git and OS-based collaboration  ([OS-Based Collaboration RFC](RFC.md))
+* Multi-user, git and OS-based collaboration  ([OS-Based Collaboration RFC](planning/collaboration.md))
 * Publication of insights or final model code to the master notebook environment
 * Tooling to suppor translation of noteobok code to production-ready model code
 * Spark/hadoop support - (challenge is encluding spark functionality for all users)
